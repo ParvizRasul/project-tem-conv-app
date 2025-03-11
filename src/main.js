@@ -1,28 +1,34 @@
-// Bootstrap’s CSS and JS Import
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap'
+import { celsiusToFahrenheit, fahrenheitToCelsius } from './converter.js';
 
+const form = document.querySelector('#converterForm');
+const tempValue = document.getElementById('tempValue');
+const tempType = document.getElementById('tempType');
+const result = document.getElementById('result');
 
-const app = document.getElementById('root')
+const C2F = 'c2f';
+const F2C = 'f2c';
 
-app.innerHTML = `
-  <div class="d-flex flex-column align-items-center justify-content-center vh-100 bg-light">
-    <!-- Spinner with Yollo logo as background -->
-    <div
-      class="spinner-border"
-      role="status"
-      style="
-        width: 6rem;
-        height: 6rem;
-        border-width: 0.4rem;
-        background: url('./yollo-logo.svg') center/contain no-repeat;
-        border-color: transparent;
-      "
-    >
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <!-- Your greeting -->
-    <h1 class="mt-3">Hello Yoller!</h1>
-  </div>
-`
+form.addEventListener('submit', (event) => {
+  event.preventDefault(); 
 
+  const currentTempValue = tempValue.value;
+  const conversionType = tempType.value;
+
+  let output;
+
+  if (currentTempValue === '') {
+    result.textContent = "Please enter a valid temperature value!";
+    return;
+  }
+
+  
+  if (conversionType === C2F) {
+    const fahrenheit = celsiusToFahrenheit(currentTempValue);
+    output = `${currentTempValue}°C = ${fahrenheit}°F`;
+  } else if (conversionType === F2C) {
+    const celsius = fahrenheitToCelsius(currentTempValue);
+    output = `${currentTempValue}°F = ${celsius}°C`;
+  }
+
+  result.textContent = output;
+});
